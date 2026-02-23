@@ -28,8 +28,7 @@ def main():
     # 4) Calculate differences
     dom_diff = compare_dom(baseline["dom"], post["dom"])
     css_diff = compare_css(baseline["css"], post["css"])
-    screenshot_diff = (False, None)
-    # screenshot_diff = compare_screenshots(baseline["screenshot"], post["screenshot"])
+    screenshot_diff = compare_screenshots(baseline["screenshot"], post["screenshot"])
 
     # 5) Pattern detection
     patterns = detect_dark_patterns(dom_diff, css_diff, screenshot_diff)
