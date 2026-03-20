@@ -1,0 +1,712 @@
+/* ═══════════════════════════════════════════════════════════════════
+   sidebar.css — Ethix AI Sidebar
+   VS Code / Cursor-inspired dark developer aesthetic
+   All classes namespaced with "ethix-" to prevent host-page conflicts
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Google Fonts fallback stack ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+/* ── Design tokens ───────────────────────────────────────────────── */
+:root {
+  --ethix-bg-base:        #0f1117;
+  --ethix-bg-surface:     #161b22;
+  --ethix-bg-elevated:    #1c2333;
+  --ethix-bg-input:       #0d1117;
+  --ethix-bg-code:        #0a0e1a;
+  --ethix-bg-user:        #1a2744;
+
+  --ethix-border:         rgba(99, 202, 183, 0.12);
+  --ethix-border-accent:  rgba(99, 202, 183, 0.35);
+
+  --ethix-accent:         #63cab7;
+  --ethix-accent-dim:     rgba(99, 202, 183, 0.15);
+  --ethix-accent-glow:    rgba(99, 202, 183, 0.08);
+
+  --ethix-text-primary:   #e6edf3;
+  --ethix-text-secondary: #8b949e;
+  --ethix-text-muted:     #484f58;
+  --ethix-text-code:      #79c0ff;
+
+  --ethix-user-accent:    #388bfd;
+  --ethix-error:          #f85149;
+  --ethix-success:        #3fb950;
+  --ethix-warning:        #d29922;
+
+  --ethix-font-ui:        'JetBrains Mono', 'Cascadia Code', 'SF Mono', monospace;
+  --ethix-font-code:      'Fira Code', 'JetBrains Mono', monospace;
+
+  --ethix-radius-sm:      6px;
+  --ethix-radius-md:      10px;
+  --ethix-radius-lg:      14px;
+
+  --ethix-sidebar-width:  400px;
+  --ethix-header-h:       56px;
+  --ethix-status-h:       28px;
+  --ethix-footer-h:       88px;
+
+  --ethix-transition:     0.18s ease;
+}
+
+/* ── Reset (scoped inside iframe body) ───────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--ethix-bg-base);
+  color: var(--ethix-text-primary);
+  font-family: var(--ethix-font-ui);
+  font-size: 13px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Shell layout ────────────────────────────────────────────────── */
+.ethix-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background: var(--ethix-bg-base);
+  position: relative;
+  /* Glow effect on left edge */
+  box-shadow: inset 1px 0 0 rgba(99, 202, 183, 0.2);
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+.ethix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  height: var(--ethix-header-h);
+  background: var(--ethix-bg-surface);
+  border-bottom: 1px solid var(--ethix-border);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.ethix-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ethix-accent), transparent);
+  opacity: 0.4;
+}
+
+.ethix-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ethix-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: var(--ethix-accent-dim);
+  border: 1px solid var(--ethix-border-accent);
+  border-radius: var(--ethix-radius-sm);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.ethix-logo::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at center, rgba(99,202,183,0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.ethix-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ethix-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ethix-text-primary);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.ethix-subtitle {
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--ethix-accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.ethix-header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Icon buttons ────────────────────────────────────────────────── */
+.ethix-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--ethix-text-secondary);
+  border-radius: var(--ethix-radius-sm);
+  cursor: pointer;
+  transition: background var(--ethix-transition), color var(--ethix-transition);
+  outline: none;
+}
+
+.ethix-btn-icon:hover {
+  background: rgba(255,255,255,0.07);
+  color: var(--ethix-text-primary);
+}
+
+.ethix-close-btn:hover {
+  background: rgba(248, 81, 73, 0.15);
+  color: var(--ethix-error);
+}
+
+/* ── Status bar ──────────────────────────────────────────────────── */
+.ethix-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: var(--ethix-status-h);
+  background: var(--ethix-bg-elevated);
+  border-bottom: 1px solid var(--ethix-border);
+  flex-shrink: 0;
+}
+
+.ethix-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ethix-success);
+  flex-shrink: 0;
+  animation: ethix-pulse 2.4s ease infinite;
+}
+
+.ethix-status-dot.ethix-loading {
+  background: var(--ethix-warning);
+  animation: ethix-pulse-fast 0.8s ease infinite;
+}
+
+.ethix-status-dot.ethix-error {
+  background: var(--ethix-error);
+  animation: none;
+}
+
+.ethix-status-text {
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--ethix-text-muted);
+  letter-spacing: 0.02em;
+}
+
+@keyframes ethix-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+@keyframes ethix-pulse-fast {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+/* ── Chat area ───────────────────────────────────────────────────── */
+.ethix-chat {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99,202,183,0.2) transparent;
+}
+
+.ethix-chat::-webkit-scrollbar {
+  width: 4px;
+}
+.ethix-chat::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ethix-chat::-webkit-scrollbar-thumb {
+  background: rgba(99,202,183,0.2);
+  border-radius: 4px;
+}
+.ethix-chat::-webkit-scrollbar-thumb:hover {
+  background: rgba(99,202,183,0.4);
+}
+
+/* ── Message bubbles ─────────────────────────────────────────────── */
+.ethix-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: ethix-msg-in 0.22s ease both;
+  max-width: 100%;
+}
+
+@keyframes ethix-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* User message */
+.ethix-msg.ethix-user {
+  align-items: flex-end;
+}
+
+.ethix-msg.ethix-user .ethix-bubble {
+  background: var(--ethix-bg-user);
+  border: 1px solid rgba(56, 139, 253, 0.3);
+  border-radius: var(--ethix-radius-lg) var(--ethix-radius-lg) 4px var(--ethix-radius-lg);
+  color: var(--ethix-text-primary);
+  padding: 10px 13px;
+  max-width: 82%;
+  font-size: 13px;
+  line-height: 1.65;
+  word-break: break-word;
+  white-space: pre-wrap;
+  position: relative;
+}
+
+/* Bot message */
+.ethix-msg.ethix-bot {
+  align-items: flex-start;
+}
+
+.ethix-msg.ethix-bot .ethix-msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  max-width: 100%;
+}
+
+.ethix-bot-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--ethix-radius-sm);
+  background: var(--ethix-accent-dim);
+  border: 1px solid var(--ethix-border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ethix-accent);
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
+
+.ethix-msg.ethix-bot .ethix-bubble {
+  background: var(--ethix-bg-elevated);
+  border: 1px solid var(--ethix-border);
+  border-radius: 4px var(--ethix-radius-lg) var(--ethix-radius-lg) var(--ethix-radius-lg);
+  color: var(--ethix-text-primary);
+  padding: 10px 13px;
+  max-width: calc(100% - 35px);
+  font-size: 13px;
+  line-height: 1.75;
+  word-break: break-word;
+}
+
+/* Error bubble */
+.ethix-msg.ethix-bot .ethix-bubble.ethix-error-bubble {
+  border-color: rgba(248, 81, 73, 0.35);
+  background: rgba(248, 81, 73, 0.07);
+  color: var(--ethix-error);
+}
+
+/* Meta (timestamp) */
+.ethix-msg-meta {
+  font-size: 10px;
+  color: var(--ethix-text-muted);
+  padding: 0 2px;
+}
+
+/* ── Markdown-style content inside bubble ────────────────────────── */
+.ethix-bubble p {
+  margin-bottom: 8px;
+}
+.ethix-bubble p:last-child { margin-bottom: 0; }
+
+.ethix-bubble strong { color: #f0f6fc; font-weight: 600; }
+.ethix-bubble em     { color: #cdd9e5; font-style: italic; }
+
+.ethix-bubble a {
+  color: var(--ethix-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ethix-bubble ul, .ethix-bubble ol {
+  padding-left: 18px;
+  margin-bottom: 8px;
+}
+.ethix-bubble li { margin-bottom: 3px; }
+
+.ethix-bubble h1, .ethix-bubble h2, .ethix-bubble h3 {
+  color: #f0f6fc;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.ethix-bubble h1 { font-size: 15px; }
+.ethix-bubble h2 { font-size: 14px; }
+.ethix-bubble h3 { font-size: 13px; color: var(--ethix-accent); }
+
+/* Inline code */
+.ethix-bubble code:not(.ethix-code-block code) {
+  font-family: var(--ethix-font-code);
+  font-size: 11.5px;
+  background: rgba(110, 118, 129, 0.2);
+  border: 1px solid rgba(110, 118, 129, 0.25);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--ethix-text-code);
+}
+
+/* ── Code blocks ─────────────────────────────────────────────────── */
+.ethix-code-block {
+  margin: 10px 0;
+  border-radius: var(--ethix-radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(99, 202, 183, 0.15);
+  background: var(--ethix-bg-code);
+  position: relative;
+}
+
+.ethix-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.ethix-code-lang {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--ethix-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ethix-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--ethix-font-ui);
+  font-size: 10px;
+  color: var(--ethix-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  transition: all var(--ethix-transition);
+  letter-spacing: 0.04em;
+}
+
+.ethix-copy-btn:hover {
+  color: var(--ethix-text-primary);
+  border-color: var(--ethix-border);
+  background: rgba(255,255,255,0.05);
+}
+
+.ethix-copy-btn.ethix-copied {
+  color: var(--ethix-success);
+  border-color: rgba(63, 185, 80, 0.3);
+}
+
+.ethix-code-block pre {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.ethix-code-block pre::-webkit-scrollbar { height: 3px; }
+.ethix-code-block pre::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 3px;
+}
+
+.ethix-code-block pre code {
+  font-family: var(--ethix-font-code) !important;
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  color: #e6edf3 !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  white-space: pre;
+  display: block;
+}
+
+/* ── Welcome card ────────────────────────────────────────────────── */
+.ethix-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 10px;
+  text-align: center;
+  animation: ethix-msg-in 0.4s ease both;
+}
+
+.ethix-welcome-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--ethix-accent-dim);
+  border: 1px solid var(--ethix-border-accent);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ethix-welcome-icon::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  background: radial-gradient(circle, rgba(99,202,183,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ethix-welcome h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ethix-text-primary);
+  margin: 0;
+}
+
+.ethix-welcome p {
+  font-size: 12px;
+  color: var(--ethix-text-secondary);
+  line-height: 1.6;
+  max-width: 260px;
+  margin: 0;
+}
+
+.ethix-welcome-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.ethix-chip {
+  font-size: 11px;
+  padding: 5px 11px;
+  background: var(--ethix-bg-elevated);
+  border: 1px solid var(--ethix-border);
+  border-radius: 20px;
+  color: var(--ethix-text-secondary);
+  cursor: pointer;
+  transition: all var(--ethix-transition);
+}
+
+.ethix-chip:hover {
+  border-color: var(--ethix-border-accent);
+  color: var(--ethix-accent);
+  background: var(--ethix-accent-glow);
+}
+
+/* ── Typing indicator ────────────────────────────────────────────── */
+.ethix-typing {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px 4px;
+  flex-shrink: 0;
+}
+
+.ethix-typing.ethix-visible {
+  display: flex;
+}
+
+.ethix-typing-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--ethix-radius-sm);
+  background: var(--ethix-accent-dim);
+  border: 1px solid var(--ethix-border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ethix-accent);
+  flex-shrink: 0;
+}
+
+.ethix-typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--ethix-bg-elevated);
+  border: 1px solid var(--ethix-border);
+  border-radius: 4px var(--ethix-radius-lg) var(--ethix-radius-lg) var(--ethix-radius-lg);
+  padding: 8px 14px;
+}
+
+.ethix-typing-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ethix-accent);
+  opacity: 0.4;
+  animation: ethix-dot-bounce 1.2s ease infinite;
+}
+
+.ethix-typing-dots span:nth-child(2) { animation-delay: 0.18s; }
+.ethix-typing-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes ethix-dot-bounce {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30%            { opacity: 1;   transform: translateY(-4px); }
+}
+
+/* ── Typing animation cursor (streaming text) ────────────────────── */
+.ethix-cursor::after {
+  content: '▋';
+  color: var(--ethix-accent);
+  animation: ethix-blink 0.7s step-end infinite;
+  font-size: 12px;
+}
+
+@keyframes ethix-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Footer / input area ─────────────────────────────────────────── */
+.ethix-footer {
+  flex-shrink: 0;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--ethix-border);
+  background: var(--ethix-bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ethix-input-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--ethix-bg-input);
+  border: 1px solid var(--ethix-border);
+  border-radius: var(--ethix-radius-md);
+  padding: 8px 10px;
+  transition: border-color var(--ethix-transition), box-shadow var(--ethix-transition);
+}
+
+.ethix-input-wrap:focus-within {
+  border-color: var(--ethix-border-accent);
+  box-shadow: 0 0 0 3px var(--ethix-accent-glow);
+}
+
+.ethix-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ethix-text-primary);
+  font-family: var(--ethix-font-ui);
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  min-height: 20px;
+  max-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99,202,183,0.15) transparent;
+}
+
+.ethix-input::placeholder {
+  color: var(--ethix-text-muted);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.ethix-send-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--ethix-radius-sm);
+  border: none;
+  background: var(--ethix-accent);
+  color: #0f1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--ethix-transition);
+  outline: none;
+}
+
+.ethix-send-btn:hover {
+  background: #7fd6c5;
+  box-shadow: 0 2px 12px rgba(99, 202, 183, 0.4);
+  transform: translateY(-1px);
+}
+
+.ethix-send-btn:active {
+  transform: translateY(0);
+}
+
+.ethix-send-btn:disabled {
+  background: var(--ethix-text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ethix-footer-hint {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--ethix-text-muted);
+  padding: 0 2px;
+}
+
+/* ── Responsive (narrow screens / compact mode) ──────────────────── */
+@media (max-width: 440px) {
+  .ethix-msg.ethix-user .ethix-bubble,
+  .ethix-msg.ethix-bot  .ethix-bubble {
+    max-width: 94%;
+  }
+}
